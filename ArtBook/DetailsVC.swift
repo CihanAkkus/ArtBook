@@ -38,12 +38,21 @@ class DetailsVC: UIViewController {
         saveButton.frame = CGRect(x: 0, y: height*1.10, width: width, height: height*0.15)
         view.addSubview(saveButton)
         
-        saveButton.addTarget(self, action: #selector(savePhoto), for: UIControl.Event.touchUpInside)
+        saveButton.addTarget(self, action: #selector(DetailsVC.savePhotoTapped), for: UIControl.Event.touchUpInside)
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DetailsVC.hideKeyboard))
+        view.addGestureRecognizer(gestureRecognizer)
         
     
     }
     
-    @objc func savePhoto(){
+    @objc func hideKeyboard(){
+        
+        view.endEditing(true)
+        
+    }
+    
+    @objc func savePhotoTapped(){
         
         
         

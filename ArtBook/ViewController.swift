@@ -9,6 +9,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem:UIBarButtonItem.SystemItem.add, target: self, action: #selector (addButtonTapped))
+        
         tableView.frame = view.bounds
         tableView.delegate = self
         tableView.dataSource = self
@@ -16,6 +18,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         view.addSubview(tableView)
         
     }
+    
+    @objc func addButtonTapped(){
+        
+        performSegue(withIdentifier: "toDetailsVC", sender: nil)
+    
+    }
+    
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         <#code#>
