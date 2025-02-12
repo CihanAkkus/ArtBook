@@ -1,7 +1,8 @@
 
 import UIKit
+import CoreData
 
-class DetailsVC: UIViewController {
+class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let image = UIImageView()
     let nameField = UITextField()
@@ -40,11 +41,36 @@ class DetailsVC: UIViewController {
         
         saveButton.addTarget(self, action: #selector(DetailsVC.savePhotoTapped), for: UIControl.Event.touchUpInside)
         
+        
+        //Recognizers
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DetailsVC.hideKeyboard))
         view.addGestureRecognizer(gestureRecognizer)
         
-    
+        image.isUserInteractionEnabled = true
+        let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectImage))
+        image.addGestureRecognizer(imageTapRecognizer)
+        
     }
+    
+    
+    @objc func selectImage(){
+        
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType =  .photoLibrary
+        picker.allowsEditing = true
+        present(picker, animated: true, completion: nil)
+
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        image.image = info[.originalImage] as? UIImage
+        self.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
     
     @objc func hideKeyboard(){
         
@@ -53,6 +79,22 @@ class DetailsVC: UIViewController {
     }
     
     @objc func savePhotoTapped(){
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let newPainting = NSEntityDescription.insertNewObject(forEntityName: "Paintings",into: context)
+        
+        //Attributes
+        
+        newPainting.setValue(nameField.text!, forKey: "name")
+        newPainting.setValue(artistField.text!, forKey: "artist")
+        
+        if let year = Int(yearField.text!){
+            
+            newPainting.setValue(year, forKey: "year")
+            
+        }
         
         
         
