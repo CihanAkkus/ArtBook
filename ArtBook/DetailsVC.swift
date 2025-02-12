@@ -16,27 +16,27 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         let width = view.frame.size.width
         let height = view.frame.size.height
         
-        image.frame = CGRect(x: width*0.5 - width*0.8/2,y: height*0.20 , width: width*0.8, height: height*0.4)
+        image.frame = CGRect(x: width*0.5 - width*0.8/2,y: height*0.1 , width: width*0.8, height: height*0.3)
         view.addSubview(image)
         
         nameField.placeholder = "Name"
         nameField.textAlignment = .center
-        nameField.frame = CGRect(x: 0, y: height*0.65, width: width, height: height*0.15)
+        nameField.frame = CGRect(x: 0, y: height*0.45, width: width, height: height*0.10)
         view.addSubview(nameField)
         
         artistField.placeholder = "Artist"
         artistField.textAlignment = .center
-        artistField.frame = CGRect(x: 0, y: height*0.80, width: width, height: height*0.15)
+        artistField.frame = CGRect(x: 0, y: height*0.55, width: width, height: height*0.10)
         view.addSubview(artistField)
         
         yearField.placeholder = "Year"
         yearField.textAlignment = .center
-        yearField.frame = CGRect(x: 0, y: height*0.95, width: width, height: height*0.15)
+        yearField.frame = CGRect(x: 0, y: height*0.65, width: width, height: height*0.10)
         view.addSubview(yearField)
         
         saveButton.setTitle("Save",for: UIControl.State.normal)
         saveButton.setTitleColor(UIColor.magenta, for: UIControl.State.normal)
-        saveButton.frame = CGRect(x: 0, y: height*1.10, width: width, height: height*0.15)
+        saveButton.frame = CGRect(x: 0, y: height*0.75, width: width, height: height*0.10)
         view.addSubview(saveButton)
         
         saveButton.addTarget(self, action: #selector(DetailsVC.savePhotoTapped), for: UIControl.Event.touchUpInside)
@@ -96,9 +96,25 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
             
         }
         
+        newPainting.setValue(UUID(), forKey: "id")
         
+        //optional kısmına bi bak
+        //let data = image.image!.jpegData(compressionQuality: 0.5)
+        //newPainting.setValue(data, forKey: "image")
+
         
+        if let imageData = image.image?.jpegData(compressionQuality: 0.5) {
+            newPainting.setValue(imageData, forKey: "image")
+        }
+
         
+        do{
+            try context.save()
+            print("success")
+        } catch{
+            
+            print("error")
+        }
         
     }
     
