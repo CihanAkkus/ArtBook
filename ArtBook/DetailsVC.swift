@@ -10,6 +10,9 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     let yearField = UITextField()
     let saveButton = UIButton()
     
+    var chosenPainting = ""
+    var chosenPaintingID: UUID?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,6 +44,50 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         view.addSubview(saveButton)
         
         saveButton.addTarget(self, action: #selector(DetailsVC.savePhotoTapped), for: UIControl.Event.touchUpInside)
+        
+        if chosenPainting != ""{
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paintings")
+            
+            let idString = chosenPaintingID?.uuidString
+            
+            fetchRequest.predicate = NSPredicate(format: "id = %@", idString!)
+            fetchRequest.returnsObjectsAsFaults = false
+            
+            do{
+                let results = try context.fetch(fetchRequest)
+                
+                if results.count > 0{
+                    
+                    for result in results as! [NSManagedObject]{
+                        
+                        if let name = result.value(forKey: "name") as? String{
+                            nameField.text = name
+                        }
+                        if let artist = result.value(forKey: "artist") as? String{
+                            artistField.text = artist
+                        }
+                        if let year = result.value(forKey: "year") as? Int{
+                            yearField.text = String(year)
+                        }
+                        if let imageData = result.value(forKey: "image") as? Data{
+                            let image = UIImage(data: imageData)
+                            self.image.image = image
+                        }
+                        
+                        
+                    }
+                    
+                }
+                
+            }catch{
+                print("error")
+            }
+            
+        }
         
         
         //Recognizers
@@ -98,10 +145,6 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         }
         
         newPainting.setValue(UUID(), forKey: "id")
-        
-        //optional kısmına bi bak
-        //let data = image.image!.jpegData(compressionQuality: 0.5)
-        //newPainting.setValue(data, forKey: "image")
 
         
         if let imageData = image.image?.jpegData(compressionQuality: 0.5) {
