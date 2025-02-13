@@ -26,8 +26,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(getData), name: NSNotification.Name(rawValue: "newData"), object: nil)
+    }
     
-    func getData(){
+    
+    @objc func getData(){
+        
+        nameArray.removeAll(keepingCapacity: false)
+        idArray.removeAll(keepingCapacity: false)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -35,6 +42,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Paintings")
         fetchRequest.returnsObjectsAsFaults = false
         
+
         do{
             let results = try context.fetch(fetchRequest)
             

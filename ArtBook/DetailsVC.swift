@@ -16,7 +16,8 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         let width = view.frame.size.width
         let height = view.frame.size.height
         
-        image.frame = CGRect(x: width*0.5 - width*0.8/2,y: height*0.1 , width: width*0.8, height: height*0.3)
+        image.image = UIImage(named: "selectimage")
+        image.frame = CGRect(x: width*0.5 - width*0.8/2,y: height*0.15 , width: width*0.8, height: height*0.3)
         view.addSubview(image)
         
         nameField.placeholder = "Name"
@@ -115,6 +116,10 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
             
             print("error")
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("newData"), object: nil)
+        self.navigationController?.popViewController(animated: true)
+        
         
     }
     
