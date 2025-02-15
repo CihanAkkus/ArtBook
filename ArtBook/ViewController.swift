@@ -78,7 +78,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     
     @objc func addButtonTapped(){
-        selectedPainting = "" //burayı bi kontrol et
+        selectedPainting = ""
         performSegue(withIdentifier: "toDetailsVC", sender: nil)
     
     }

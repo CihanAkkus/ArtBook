@@ -46,6 +46,7 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         saveButton.addTarget(self, action: #selector(DetailsVC.savePhotoTapped), for: UIControl.Event.touchUpInside)
         
         if chosenPainting != ""{
+            saveButton.isHidden = true
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
@@ -89,6 +90,11 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
                 print("error")
             }
             
+        }else{
+            saveButton.isHidden = false
+            saveButton.isEnabled = false
+            
+            
         }
         
         
@@ -116,6 +122,7 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         image.image = info[.originalImage] as? UIImage
+        saveButton.isEnabled = true
         self.dismiss(animated: true, completion: nil)
         
     }
@@ -133,7 +140,7 @@ class DetailsVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        let newPainting = NSEntityDescription.insertNewObject(forEntityName: "Paintings",into: context)
+        let newPainting = NSEntityDescription.insertNewObject(forEntityName: "Paintings",into: context)//A new line is added to entity here.
         
         //Attributes
         
