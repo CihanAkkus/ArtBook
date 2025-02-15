@@ -48,7 +48,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
 
         do{
-            let results = try context.fetch(fetchRequest)
+            let results = try context.fetch(fetchRequest)//this will return a list of all records.
             if results.count > 0{
                 
                 for result in results as! [NSManagedObject]{
