@@ -130,7 +130,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             do{
                 let results = try context.fetch(fetchRequest)
                 if results.count > 0{
-                    for result in results as! [NSManagedObject]{
+                    for result in results as! [NSManagedObject]{//The result variable represents only one row(record).
                         
                         if let id = result.value(forKey: "id") as? UUID{
                             
